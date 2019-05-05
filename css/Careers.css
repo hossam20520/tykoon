@@ -1,0 +1,279 @@
+/* Start Scroll Bar*/
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(185, 12, 12, 0);
+    background-color:transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #1F1F1F;
+    height: 50px;
+}
+
+
+body {
+  margin: 0;
+    font-family: 'PT Sans', sans-serif;
+    background-image: url(../img/banter-snaps-128472-unsplash.jpg);
+    background-size: cover
+
+}
+
+
+
+
+
+/* NavBar Start */
+
+
+
+.navbar{
+    background-color: rgb(255, 255, 255);
+    border-radius: 0;
+    border: 0;
+    font-size: 1.1em;
+    padding: 10px;
+    width: 100%;
+    z-index: 99;
+    top: 0;
+    transition: .5s;
+    margin: 0;
+    position: fixed;
+    z-index: 999999999999999999999999999999
+    /* box-shadow: 0px 4px 10px -5px rgba(0,0,0,0.75); */
+}
+
+.navbar-default .navbar-toggle .icon-bar{
+    background-color: #fff;
+}
+
+.navbar-default .navbar-brand{
+    
+    float: left;
+}
+
+.navbar-default .navbar-nav>li>a{
+    color:#333;
+    margin-right: 15px;
+    transition: .5s;
+    font-size: 12.2px;
+    font-weight: bold;
+}
+
+.navbar-default .navbar-nav>li>a.active, .navbar-default .navbar-nav>li>a.active:focus{
+    color: darkturquoise;
+}
+
+
+
+
+
+.navbar-default .navbar-nav>li>a:hover{
+    color: #00aec1;
+}
+
+.navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover{
+    color: #00aec1;
+}
+
+
+.navbar-brand img{
+    width: 150px;
+    margin-top:-70px;
+    height: 150px;
+    float: left;
+        
+}
+.navbar-default .navbar-nav>.active>a{
+     color: #fff;
+    background-color: #00aec1; 
+   border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    font-size: 103x
+}
+
+.navbar-default .navbar-nav>.active>a:hover{
+   color: #fff;
+    background-color: #333;
+    
+}
+
+.navbar-default ul li{
+    color: #fff;
+    float: right;
+    
+}
+.navbar ul{
+    transition: ;
+    float: right
+}
+
+
+.collapse ul{
+    margin: 0;
+    padding-right: 0px; 
+    transition: .5s;
+    
+}
+
+.navbar-brand{
+    float: left;
+    margin-right: 10px;
+    font-size: 1.4em;
+    
+}
+.navbar-toggle{
+    float: left;
+    border-radius: 11px;
+    background-color: #333;
+}
+
+.navbar-toggle:hover{
+    background-color:#00aec1
+}
+
+.navbar-collapse{
+    padding: 0;
+    
+}
+.navbar-default .navbar-collapse{
+    border: none;
+}
+
+.scrolled{
+    background-color: rgb(30, 54, 83);
+    transition: .5s;
+    padding: 0;
+    
+}
+
+@media screen and (max-width: 760px){
+    
+.navbar-header{
+    width: 100%;
+    
+}
+    .navbar ul{
+        width: 100%;
+        
+        padding: 18px 10px 1px 15px;
+        margin-top:25px;
+        
+}
+    
+    .navbar ul li:hover{
+        background-color: #333;
+        
+    }
+    
+    .navbar-header{
+    float: none;
+    
+}
+
+    .navbar-default ul li{
+        color: #fff;
+        float: none;
+        margin-bottom: 10px;
+    }
+   
+    
+    
+    
+  
+    .navbar-brand{
+        padding-left: 70px
+    }
+    
+}
+
+
+.navbar-fixed-top.scrolled {
+  background-color: #333 !important;
+
+}
+
+
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+
+
+/* NavBar End */
+
+
+
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width: 100%;
+  background-color: #00aec1;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+div.container {
+  border-radius: 5px;
+  background-color: #333;
+  padding: 20px;
+opacity: .9;
+    margin-top: 110px
+}
+
+label{
+    color: #fff
+}
+form{
+    
+}
+
+input[type=file]{
+    color: #fff;
+    
+}
