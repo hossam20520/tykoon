@@ -25,7 +25,7 @@ if(isset($_GET['page']) == "comme"){
 
 
 <div class="col-md-4 text-center data">
-                <a href="https://tykooneg.com/project/?project_id=1"><img src="<?php echo $row->img_com_pro;   ?>" style="width: 80%;height: 290px"></a>
+                <a href="https://tykooneg.com/project/?project_id=<?php  echo $row->id_com_pro;   ?>&&type=comPro"><img src="<?php echo $row->img_com_pro;   ?>" style="width: 80%;height: 290px"></a>
             <p><?php echo $row->name_com_pro;   ?></p>
             </div>
 
@@ -38,7 +38,7 @@ endforeach;
 ?>
 
 <div class="col-md-4 text-center data">
-                <a href="https://tykooneg.com/project/?project_id=1"><img src="<?php echo $row->img_sort_pro;   ?>" style="width: 80%;height: 290px"></a>
+                <a href="https://tykooneg.com/project/?project_id=<?php  echo $row->id_sort_pro;   ?>&&type=sortPro"><img src="<?php echo $row->img_sort_pro;   ?>" style="width: 80%;height: 290px"></a>
             <p><?php echo $row->name_sort_pro;   ?></p>
             </div>
 
@@ -51,7 +51,7 @@ endforeach;
 
 
    <div class="col-md-4 text-center data">
-                <a href="https://tykooneg.com/project/?project_id=1"><img src="<?php echo $row->img_res_pro_sale;   ?>" style="width: 80%;height: 290px"></a>
+                <a href="https://tykooneg.com/project/?project_id=<?php  echo $row->id_res_pro_sale;   ?>&&type=resSale"><img src="<?php echo $row->img_res_pro_sale;   ?>" style="width: 80%;height: 290px"></a>
             <p><?php echo $row->name_res_pro_sale;   ?></p>
             </div>
 
@@ -66,7 +66,7 @@ endforeach;
 
 
 <div class="col-md-4 text-center data">
-                <a href="https://tykooneg.com/project/?project_id=1"><img src="<?php echo $img_com_pro_sale;   ?>" style="width: 80%;height: 290px"></a>
+                <a href="https://tykooneg.com/project/?project_id=<?php  echo $row->id_com_pro_sale;   ?>&&type=comSale"><img src="<?php echo $img_com_pro_sale;   ?>" style="width: 80%;height: 290px"></a>
             <p><?php echo $row->name_com_pro_sale;   ?></p>
             </div>
 
@@ -78,8 +78,8 @@ endforeach;
     foreach ( $area as $row ):
 ?>
 
-<div class="col-md-4 text-center data">
-                <a href="https://tykooneg.com/project/?project_id=1"><img src="<?php echo $img_sort_pro_sale;   ?>" style="width: 80%;height: 290px"></a>
+      <div class="col-md-4 text-center data">
+                <a href="https://tykooneg.com/project/?project_id=<?php  echo $row->id_sort_pro_sale;   ?>&&type=sortSale"><img src="<?php echo $img_sort_pro_sale;   ?>" style="width: 80%;height: 290px"></a>
             <p><?php echo $row->name_sort_pro_sale;   ?></p>
             </div>
 
@@ -92,7 +92,7 @@ endforeach;
 
 
        <div class="col-md-4 text-center data">
-                <a href="https://tykooneg.com/project/?project_id=1"><img src="<?php echo $row->img_res_pro;   ?>" style="width: 80%;height: 290px"></a>
+                <a href="https://tykooneg.com/project/?project_id=<?php  echo $row->id_res_pro;   ?>&&type=resPro"><img src="<?php echo $row->img_res_pro;   ?>" style="width: 80%;height: 290px"></a>
             <p><?php echo $row->name_res_pro;   ?></p>
             </div>
 

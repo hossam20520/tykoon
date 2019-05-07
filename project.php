@@ -20,9 +20,57 @@
   <div class="slider">
   <?php  
 
+
+if(isset($_GET['type'])){
+  global $wpdb; 
+  $type =  $_GET['type'];
+  $id_project = $_GET['project_id'];
+  $results = $wpdb->get_results( "SELECT * FROM  wpym_all_projects where id_project_area_a ='$id_project' AND type_project_a ='$type' ");
+
+
+
+
+  $count = 0;
+  if(!empty($results)) {
+    
+      foreach($results as $row){
+        
+          ?>
+
+
+      <div class="slide slide-<?php echo $count; ?> <?php if($count == 0){ echo "active"; }   ?>">
+        <div class="slide__bg"><img src="<?php echo $row->img_project_a;  ?>"></div>
+        <div class="slide__content">
+          <svg class="slide__overlay" viewBox="0 0 720 405" preserveAspectRatio="xMaxYMax slice">
+            <path class="slide__overlay-path" d="M0,0 150,0 500,405 0,405" />
+          </svg>
+          <div class="slide__text">
+            <h2 class="slide__text-heading"><?php echo $row->title_project_a;  ?></h2>
+            <p class="slide__text-desc"><?php echo $row->desc_project_a;  ?></p>
+            <a>Book Now</a>
+          </div>
+        </div>
+      </div>
+  
+     <?php
+     $count = $count +1;
+      }
+    }
+
+
+
+
+
+
+
+
+}else{
+
+
+
 global $wpdb;
 if(isset($_GET['project_id'])){
-  $id_project = $_GET['project_id'];
+   $id_project = $_GET['project_id'];
   $results = $wpdb->get_results( "SELECT * FROM  ex_single_project where id_ex_project ='$id_project'"); 
 }else{
   $url = "https://tykooneg.com/";
@@ -56,8 +104,12 @@ if(!empty($results)) {
    $count = $count +1;
     }
   }
-
+}
 ?>
+
+
+
+
   </div>
         </div>
 

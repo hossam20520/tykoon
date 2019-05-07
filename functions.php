@@ -92,6 +92,10 @@ function hossam_add_style(){
                 wp_enqueue_style('contact-css' , get_template_directory_uri() . '/css/Contact.css'); 
         }else if(is_page('about')){
                 wp_enqueue_style('about-css' , get_template_directory_uri() . '/css/About.css'); 
+           
+        }elseif(is_page('adminDev')){
+
+ wp_enqueue_style('style-css' , get_template_directory_uri() . '/css/style.css');
         }else{ 
                 wp_enqueue_style('style-css' , get_template_directory_uri() . '/css/style.css');
         }
@@ -139,6 +143,49 @@ function data_add_name(){
 }
 
 
+add_action( 'wp_ajax_my_action' , 'data_fetch'  );
+add_action( 'wp_ajax_nopriv_my_action' , 'data_fetch'  );
+
+function data_fetch(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+  $table_name = "wpym_developers";
+  $wpdb->insert($table_name, array(
+	  'name_dev' =>  "not_name", //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+          'description_dev' => "not_name",
+          'img_dev'   => $upload['url']
+        ),array('%s','%s' , '%s' ) 
+);
+	echo json_encode($upload);
+	wp_reset_postdata();
+	wp_die();
+	
+
+
+}
+
+
+add_action( 'wp_ajax_updateDev' , 'updateDev_ajx');
+add_action( 'wp_ajax_nopriv_updateDev' , 'updateDev_ajx');
+
+function updateDev_ajx(){
+global $wpdb;
+$table_name  = "wpym_developers";
+
+$wpdb->query( $wpdb->prepare("UPDATE $table_name 
+			SET name_dev = %s  , description_dev = %s
+		 WHERE name_dev = %s",$_POST['name_dev'],$_POST['desc'] , "not_name")
+);
+
+$ar = array("status"=> "success");
+	echo json_encode($ar);
+	wp_reset_postdata();
+	wp_die();
+	
+
+
+}
 
 
 
@@ -148,6 +195,1249 @@ function data_add_name(){
 
 
 
+
+//  jjjjjjjjjjjjjjjjjjjjjjjj---------admResPro----------jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+
+add_action( 'wp_ajax_admResPro' , 'admResPro_area_img'  );
+add_action( 'wp_ajax_nopriv_admResPro' , 'admResPro_area_img'  );
+
+function admResPro_area_img(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+  $table_name = "wpym_res_area";
+  $wpdb->insert($table_name, array(
+	  'name_res_a' =>  $_POST['new_area_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'img_res_a'   => $upload['url']
+        ),array('%s','%s') 
+);
+
+$imgv = $wpdb;
+
+$id  = $imgv->get_row( "SELECT * from wpym_res_area ORDER BY id_res_a DESC" );
+$gid = $id->id_res_a;
+
+
+
+
+
+
+
+    $arr = array(
+            'url' => $upload['url'],
+            'id'  => $gid
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+add_action( 'wp_ajax_admResPro_p_img' , 'admResPro_project_img'  );
+add_action( 'wp_ajax_nopriv_admResPro_p_img' , 'admResPro_project_img'  );
+
+
+function admResPro_project_img(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+  $table_name = "wpym_projects_res";
+  $wpdb->insert($table_name, array(
+	  'name_res_pro' => $_POST['name_project'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'img_res_pro'   => $upload['url'],
+          'id_area_res'   => $_POST['id_area']
+        ),array('%s','%s' , '%s') 
+);
+
+$imgv = $wpdb;
+
+$id  = $imgv->get_row( "SELECT * from wpym_projects_res ORDER BY id_res_pro DESC" );
+$gid = $id->id_res_pro;
+$ar = array(
+        'url' => $upload['url'],
+        'id' => $gid
+);
+	echo json_encode($ar);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+add_action( 'wp_ajax_project_1_d' , 'project_1'  );
+add_action( 'wp_ajax_nopriv_project_1_d' , 'project_1'  );
+
+function project_1(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "resPro"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+add_action( 'wp_ajax_project_2_d' , 'project_2'  );
+add_action( 'wp_ajax_nopriv_project_2_d' , 'project_2'  );
+
+function project_2(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "resPro"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+add_action( 'wp_ajax_project_3_d' , 'project_3'  );
+add_action( 'wp_ajax_nopriv_project_3_d' , 'project_3'  );
+
+function project_3(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "resPro"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+
+add_action( 'wp_ajax_project_4_d' , 'project_4'  );
+add_action( 'wp_ajax_nopriv_project_4_d' , 'project_4'  );
+
+function project_4(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "resPro"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+//  jjjjjjjjjjjjjjjjjjjjjjjj---------Commerisal----------jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+
+add_action( 'wp_ajax_admComPro' , 'admComPro_area_img'  );
+add_action( 'wp_ajax_nopriv_admComPro' , 'admComPro_area_img'  );
+
+function admComPro_area_img(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+  $table_name = "wpym_com_area";
+  $wpdb->insert($table_name, array(
+	  'name_com_a' =>  $_POST['new_area_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'img_com_a'   => $upload['url']
+        ),array('%s','%s') 
+);
+
+$imgv = $wpdb;
+
+$id  = $imgv->get_row( "SELECT * from wpym_com_area ORDER BY id_com_a DESC" );
+$gid = $id->id_com_a;
+
+
+
+
+
+
+
+    $arr = array(
+            'url' => $upload['url'],
+            'id'  => $gid
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+add_action( 'wp_ajax_admComPro_p_img' , 'admComPro_project_img'  );
+add_action( 'wp_ajax_nopriv_admComPro_p_img' , 'admComPro_project_img'  );
+
+
+function admComPro_project_img(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+  $table_name = "wpym_projects_com";
+  $wpdb->insert($table_name, array(
+	  'name_res_pro' => $_POST['name_project'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'img_res_pro'   => $upload['url'],
+          'id_area_res'   => $_POST['id_area']
+        ),array('%s','%s' , '%s') 
+);
+
+$imgv = $wpdb;
+
+$id  = $imgv->get_row( "SELECT * from wpym_projects_com ORDER BY id_com_pro DESC" );
+$gid = $id->id_com_pro;
+$ar = array(
+        'url' => $upload['url'],
+        'id' => $gid
+);
+	echo json_encode($ar);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+
+
+
+
+
+
+add_action( 'wp_ajax_project_1_d_com' , 'project_1_com'  );
+add_action( 'wp_ajax_nopriv_project_1_d_com' , 'project_1_com'  );
+
+function project_1_com(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "comPro"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+add_action( 'wp_ajax_project_2_d_com' , 'project_2_com'  );
+add_action( 'wp_ajax_nopriv_project_2_d_com' , 'project_2_com'  );
+
+function project_2_com(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "comPro"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+add_action( 'wp_ajax_project_3_d_com' , 'project_3_com'  );
+add_action( 'wp_ajax_nopriv_project_3_d_com' , 'project_3_com'  );
+
+function project_3_com(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "comPro"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+
+add_action( 'wp_ajax_project_4_d_com' , 'project_4_com'  );
+add_action( 'wp_ajax_nopriv_project_4_d_com' , 'project_4_com'  );
+
+function project_4_com(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "comPro"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+
+//  jjjjjjjjjjjjjjjjjjjjjjjj---------Resort----------jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+
+add_action( 'wp_ajax_admSortPro' , 'admSortPro_area_img'  );
+add_action( 'wp_ajax_nopriv_admSortPro' , 'admSortPro_area_img'  );
+
+function admSortPro_area_img(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+  $table_name = "wpym_sort_area";
+  $wpdb->insert($table_name, array(
+	  'name_sort_a' =>  $_POST['new_area_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'img_sort_a'   => $upload['url']
+        ),array('%s','%s') 
+);
+
+$imgv = $wpdb;
+
+$id  = $imgv->get_row( "SELECT * from wpym_sort_area ORDER BY id_sort_a DESC" );
+$gid = $id->id_sort_a;
+
+
+
+
+
+
+
+    $arr = array(
+            'url' => $upload['url'],
+            'id'  => $gid
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+add_action( 'wp_ajax_admSortPro_p_img' , 'admSortPro_project_img'  );
+add_action( 'wp_ajax_nopriv_admSortPro_p_img' , 'admSortPro_project_img'  );
+
+
+function admSortPro_project_img(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+  $table_name = "wpym_projects_sort";
+  $wpdb->insert($table_name, array(
+	  'name_sort_pro' => $_POST['name_project'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'img_sort_pro'   => $upload['url'],
+          'id_area_sort'   => $_POST['id_area']
+        ),array('%s','%s' , '%s') 
+);
+
+$imgv = $wpdb;
+
+$id  = $imgv->get_row( "SELECT * from wpym_projects_sort ORDER BY id_sort_pro DESC" );
+$gid = $id->id_sort_pro;
+$ar = array(
+        'url' => $upload['url'],
+        'id' => $gid
+);
+	echo json_encode($ar);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+
+
+
+
+
+
+add_action( 'wp_ajax_project_1_d_sort' , 'project_1_sort'  );
+add_action( 'wp_ajax_nopriv_project_1_d_sort' , 'project_1_sort'  );
+
+function project_1_sort(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "sortPro"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+add_action( 'wp_ajax_project_2_d_sort' , 'project_2_sort'  );
+add_action( 'wp_ajax_nopriv_project_2_d_sort' , 'project_2_sort'  );
+
+function project_2_sort(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "sortPro"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+add_action( 'wp_ajax_project_3_d_sort' , 'project_3_sort'  );
+add_action( 'wp_ajax_nopriv_project_3_d_sort' , 'project_3_sort'  );
+
+function project_3_sort(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "sortPro"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+
+add_action( 'wp_ajax_project_4_d_sort' , 'project_4_sort'  );
+add_action( 'wp_ajax_nopriv_project_4_d_sort' , 'project_4_sort'  );
+
+function project_4_sort(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "sortPro"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+
+
+
+//  jjjjjjjjjjjjjjjjjjjjjjjj---------Residental Resale----------jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+
+
+
+add_action( 'wp_ajax_admResSale' , 'admResSale_area_img'  );
+add_action( 'wp_ajax_nopriv_admResSale' , 'admResSale_area_img'  );
+
+function admResSale_area_img(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+  $table_name = "wpym_res_area_sale";
+  $wpdb->insert($table_name, array(
+	  'name_res_a_s' =>  $_POST['new_area_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'img_res_a_s'   => $upload['url']
+        ),array('%s','%s') 
+);
+
+$imgv = $wpdb;
+
+$id  = $imgv->get_row( "SELECT * from wpym_res_area_sale ORDER BY id_res_a_s DESC" );
+$gid = $id->id_res_a_s;
+
+
+
+
+
+
+
+    $arr = array(
+            'url' => $upload['url'],
+            'id'  => $gid
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+add_action( 'wp_ajax_admResSale_p_img' , 'admResSale_project_img'  );
+add_action( 'wp_ajax_nopriv_admResSale_p_img' , 'admResSale_project_img'  );
+
+
+function admResSale_project_img(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+  $table_name = "wpym_projects_res_sale";
+  $wpdb->insert($table_name, array(
+	  'name_res_pro_sale' => $_POST['name_project'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'img_res_pro_sale'   => $upload['url'],
+          'id_area_res_sale'   => $_POST['id_area']
+        ),array('%s','%s' , '%s') 
+);
+
+$imgv = $wpdb;
+
+$id  = $imgv->get_row( "SELECT * from wpym_projects_res_sale ORDER BY id_res_pro_sale DESC" );
+$gid = $id->id_res_pro;
+$ar = array(
+        'url' => $upload['url'],
+        'id' => $gid
+);
+	echo json_encode($ar);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+add_action( 'wp_ajax_project_1_d_res_sale' , 'project_1_res_Sale'  );
+add_action( 'wp_ajax_nopriv_project_1_d_res_sale' , 'project_1_res_Sale'  );
+
+function project_1_res_Sale(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "resSale"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+add_action( 'wp_ajax_project_2_d_res_sale' , 'project_2_res_sale'  );
+add_action( 'wp_ajax_nopriv_project_2_d_res_sale' , 'project_2_res_sale'  );
+
+function project_2_res_sale(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "resSale"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+add_action( 'wp_ajax_project_3_d_res_sale' , 'project_3_res_sale'  );
+add_action( 'wp_ajax_nopriv_project_3_d_res_sale' , 'project_3_res_sale'  );
+
+function project_3_res_sale(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "resSale"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+
+add_action( 'wp_ajax_project_4_d_res_sale' , 'project_4_res_sale'  );
+add_action( 'wp_ajax_nopriv_project_4_d_res_sale' , 'project_4_res_sale'  );
+
+function project_4_res_sale(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "resSale"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//   jjjjjjjjjjjjjjjjjjjjjjjj          com sale dddddddddddddddddddddddd
+
+
+
+
+
+add_action( 'wp_ajax_admComSale' , 'admComSale_area_img'  );
+add_action( 'wp_ajax_nopriv_admComSale' , 'admComSale_area_img'  );
+
+function admComSale_area_img(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+  $table_name = "wpym_com_area_sale";
+  $wpdb->insert($table_name, array(
+	  'name_com_a_s' =>  $_POST['new_area_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'img_com_a_s'   => $upload['url']
+        ),array('%s','%s') 
+);
+
+$imgv = $wpdb;
+
+$id  = $imgv->get_row( "SELECT * from wpym_com_area_sale ORDER BY id_com_a_s DESC" );
+$gid = $id->id_com_a_s;
+
+
+
+
+
+
+
+    $arr = array(
+            'url' => $upload['url'],
+            'id'  => $gid
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+add_action( 'wp_ajax_admComSale_p_img' , 'admComSale_project_img'  );
+add_action( 'wp_ajax_nopriv_admComSale_p_img' , 'admComSale_project_img'  );
+
+
+function admComSale_project_img(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+  $table_name = "wpym_projects_com_sale";
+  $wpdb->insert($table_name, array(
+	  'name_com_pro_sale' => $_POST['name_project'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'img_com_pro_sale'   => $upload['url'],
+          'id_area_com_sale'   => $_POST['id_area']
+        ),array('%s','%s' , '%s') 
+);
+
+$imgv = $wpdb;
+
+$id  = $imgv->get_row( "SELECT * from wpym_projects_com_sale ORDER BY id_com_pro_sale DESC" );
+$gid = $id->id_com_pro_sale;
+$ar = array(
+        'url' => $upload['url'],
+        'id' => $gid
+);
+	echo json_encode($ar);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+
+
+
+
+
+
+add_action( 'wp_ajax_project_1_d_com_sale' , 'project_1_com_sale'  );
+add_action( 'wp_ajax_nopriv_project_1_d_com_sale' , 'project_1_com_sale'  );
+
+function project_1_com_sale(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "comSale"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+add_action( 'wp_ajax_project_2_d_com_sale' , 'project_2_com_sale'  );
+add_action( 'wp_ajax_nopriv_project_2_d_com_sale' , 'project_2_com_sale'  );
+
+function project_2_com_sale(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "comSale"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+add_action( 'wp_ajax_project_3_d_com_sale' , 'project_3_com_sale'  );
+add_action( 'wp_ajax_nopriv_project_3_d_com_sale' , 'project_3_com_sale'  );
+
+function project_3_com_sale(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "comSale"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+
+add_action( 'wp_ajax_project_4_d_com_sale' , 'project_4_com_sale'  );
+add_action( 'wp_ajax_nopriv_project_4_d_com_sale' , 'project_4_com_sale'  );
+
+function project_4_com_sale(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "comSale"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+
+
+//  sale ///////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+add_action( 'wp_ajax_admSortSale' , 'admSortSale_area_img'  );
+add_action( 'wp_ajax_nopriv_admSortSale' , 'admSortSale_area_img'  );
+
+function admSortSale_area_img(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+  $table_name = "wpym_sort_area_sale";
+  $wpdb->insert($table_name, array(
+	  'name_sort_a_s' =>  $_POST['new_area_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'img_sort_a_s'   => $upload['url']
+        ),array('%s','%s') 
+);
+
+$imgv = $wpdb;
+
+$id  = $imgv->get_row( "SELECT * from wpym_sort_area_sale ORDER BY id_sort_a_s DESC" );
+$gid = $id->id_sort_a_s;
+
+
+
+
+
+
+
+    $arr = array(
+            'url' => $upload['url'],
+            'id'  => $gid
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+add_action( 'wp_ajax_admSortSale_p_img' , 'admSortSale_project_img'  );
+add_action( 'wp_ajax_nopriv_admSortSale_p_img' , 'admSortSale_project_img'  );
+
+
+function admSortSale_project_img(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+  $table_name = "wpym_projects_sort_sale";
+  $wpdb->insert($table_name, array(
+	  'name_sort_pro_sale' => $_POST['name_project'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'img_sort_pro_sale'   => $upload['url'],
+          'id_area_sort_sale'   => $_POST['id_area']
+        ),array('%s','%s' , '%s') 
+);
+
+$imgv = $wpdb;
+
+$id  = $imgv->get_row( "SELECT * from wpym_projects_sort_sale ORDER BY id_sort_pro_sale DESC" );
+$gid = $id->id_sort_pro_sale;
+$ar = array(
+        'url' => $upload['url'],
+        'id' => $gid
+);
+	echo json_encode($ar);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+
+
+
+
+
+
+add_action( 'wp_ajax_project_1_d_sort_sale' , 'project_1_sort_sale'  );
+add_action( 'wp_ajax_nopriv_project_1_d_sort_sale' , 'project_1_sort_sale'  );
+
+function project_1_sort_sale(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "sortSale"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+add_action( 'wp_ajax_project_2_d_sort_sale' , 'project_2_sort_sale'  );
+add_action( 'wp_ajax_nopriv_project_2_d_sort_sale' , 'project_2_sort_sale'  );
+
+function project_2_sort_sale(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "sortSale"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+add_action( 'wp_ajax_project_3_d_sort_sale' , 'project_3_sort_sale'  );
+add_action( 'wp_ajax_nopriv_project_3_d_sort_sale' , 'project_3_sort_sale'  );
+
+function project_3_sort_sale(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "sortSale"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+
+add_action( 'wp_ajax_project_4_d_sort_sale' , 'project_4_sort_sale'  );
+add_action( 'wp_ajax_nopriv_project_4_d_sort_sale' , 'project_4_sort_sale'  );
+
+function project_4_sort_sale(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+
+   $table_name = "wpym_all_projects";
+  $wpdb->insert($table_name, array(
+	  'title_project_a' =>  $_POST['pro_name'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+           'desc_project_a'  => $_POST['desc'],
+          'img_project_a'   => $upload['url'],
+           'id_project_area_a'  => $_POST['project_id'],
+           'type_project_a'    =>  "sortSale"
+        ),array('%s','%s' , '%s' , '%s' , '%s') 
+);
+
+
+    $arr = array(
+            'url' => $upload['url']
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
 
 
 
