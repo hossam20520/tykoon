@@ -53,9 +53,9 @@
   <div class="col social">
     <h1>Social</h1>
     <ul>
-      <li><img src="https://svgshare.com/i/5fq.svg" width="32" style="width: 32px;"></li>
+      <li><a href="https://www.facebook.com/TykoonRealestate.eg/"><img src="https://svgshare.com/i/5fq.svg" width="32" style="width: 32px;"></a></li>
       <li><img src="<?php echo get_template_directory_uri();    ?>/img/2000px-YouTube_play_buttom_icon_(2013-2017).svg.png" width="32" style="width: 32px;"></li>
-      <li><img src="<?php echo get_template_directory_uri();    ?>/img/1024px-Instagram_logo_2016.svg.png" width="32" style="width: 32px;"></li>
+      <li><a href="https://instagram.com/tykoonrealestate.eg?igshid=o8gi3nlwzu87"><img src="<?php echo get_template_directory_uri();    ?>/img/1024px-Instagram_logo_2016.svg.png" width="32" style="width: 32px;"></a></li>
     </ul>
   </div>
 <div class="clearfix"></div>

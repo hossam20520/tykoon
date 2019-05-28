@@ -40,6 +40,9 @@ function hossam_add_script(){
          }else if(is_page( 'blog' )){
               
                 wp_enqueue_script('Blog-js' , get_template_directory_uri() . '/script/Blog.js' , array() , false , true);  
+         }elseif(is_page( 'singledev' )){
+                wp_enqueue_script('develop-js' , get_template_directory_uri() . '/script/Single.developers.js' , array() , false , true); 
+
          }else{
 
                 wp_enqueue_script('script-js' , get_template_directory_uri() . '/script/script.js' , array() , false , true); 
@@ -89,7 +92,8 @@ function hossam_add_style(){
                 wp_enqueue_style('blog-css' , get_template_directory_uri() . '/css/Blog.css'); 
         }else if(is_page('contact')){
                
-                wp_enqueue_style('contact-css' , get_template_directory_uri() . '/css/Contact.css'); 
+                wp_enqueue_style('contact-css' , get_template_directory_uri() . '/css/Contact.css');
+
         }else if(is_page('about')){
                 wp_enqueue_style('about-css' , get_template_directory_uri() . '/css/About.css'); 
            
@@ -174,8 +178,8 @@ global $wpdb;
 $table_name  = "wpym_developers";
 
 $wpdb->query( $wpdb->prepare("UPDATE $table_name 
-			SET name_dev = %s  , description_dev = %s
-		 WHERE name_dev = %s",$_POST['name_dev'],$_POST['desc'] , "not_name")
+			SET name_dev = %s  , description_dev = %s , loc = %s
+		 WHERE name_dev = %s" ,$_POST['name_dev'],$_POST['desc'] , "not_name" , $_POST['loca'])
 );
 
 $ar = array("status"=> "success");
@@ -197,6 +201,31 @@ $ar = array("status"=> "success");
 
 
 //  jjjjjjjjjjjjjjjjjjjjjjjj---------admResPro----------jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+
+add_action( 'wp_ajax_linkResPro' , 'linkResPro'  );
+add_action( 'wp_ajax_nopriv_linkResPro' , 'linkResPro'  );
+
+
+function linkResPro(){
+
+        global $wpdb;
+       
+  $table_name = "wpym_ex_single_pdf";
+  $wpdb->insert($table_name, array(
+	  'Link_ex_pdf' =>  $_POST['link'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'id_ex_project_pdf'   =>  $_POST['id'],
+          'type_pdf'   =>  "resPro",
+          'location'  => $_POST['location']
+        ),array('%s','%s' , '%s' , '%s') 
+);
+
+
+}
+
+
+
+
 
 add_action( 'wp_ajax_admResPro' , 'admResPro_area_img'  );
 add_action( 'wp_ajax_nopriv_admResPro' , 'admResPro_area_img'  );
@@ -395,6 +424,35 @@ function project_4(){
 
 //  jjjjjjjjjjjjjjjjjjjjjjjj---------Commerisal----------jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
 
+
+
+
+
+
+
+add_action( 'wp_ajax_linkComPro' , 'linkComPro'  );
+add_action( 'wp_ajax_nopriv_linkComPro' , 'linkComPro'  );
+
+
+function linkComPro(){
+
+        global $wpdb;
+       
+  $table_name = "wpym_ex_single_pdf";
+  $wpdb->insert($table_name, array(
+	  'Link_ex_pdf' =>  $_POST['link'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'id_ex_project_pdf'   =>  $_POST['id'],
+          'type_pdf'   =>  "comPro",
+          'location' => $_POST['location']
+        ),array('%s','%s' , '%s' , '%s') 
+);
+
+
+}
+
+
+
 add_action( 'wp_ajax_admComPro' , 'admComPro_area_img'  );
 add_action( 'wp_ajax_nopriv_admComPro' , 'admComPro_area_img'  );
 
@@ -444,10 +502,12 @@ function admComPro_project_img(){
 
   $table_name = "wpym_projects_com";
   $wpdb->insert($table_name, array(
-	  'name_res_pro' => $_POST['name_project'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+          'name_com_pro' => $_POST['name_project'], 
+          
+          //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
          
-          'img_res_pro'   => $upload['url'],
-          'id_area_res'   => $_POST['id_area']
+          'img_com_pro'   => $upload['url'],
+          'id_area_com'   => $_POST['id_area']
         ),array('%s','%s' , '%s') 
 );
 
@@ -600,6 +660,35 @@ function project_4_com(){
 
 
 //  jjjjjjjjjjjjjjjjjjjjjjjj---------Resort----------jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+
+
+
+add_action( 'wp_ajax_linkSortPro' , 'linkSortPro'  );
+add_action( 'wp_ajax_nopriv_linkSortPro' , 'linkSortPro'  );
+
+
+function linkSortPro(){
+
+        global $wpdb;
+       
+  $table_name = "wpym_ex_single_pdf";
+  $wpdb->insert($table_name, array(
+	  'Link_ex_pdf' =>  $_POST['link'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'id_ex_project_pdf'   =>  $_POST['id'],
+          'type_pdf'   =>  "sortPro",
+          'location' => $_POST['location']
+        ),array('%s','%s' , '%s' , '%s') 
+);
+
+
+}
+
+
+
+
+
+
 
 add_action( 'wp_ajax_admSortPro' , 'admSortPro_area_img'  );
 add_action( 'wp_ajax_nopriv_admSortPro' , 'admSortPro_area_img'  );
@@ -811,6 +900,30 @@ function project_4_sort(){
 
 
 
+add_action( 'wp_ajax_linkResSale' , 'linkResSale'  );
+add_action( 'wp_ajax_nopriv_linkResSale' , 'linkResSale'  );
+
+
+function linkResSale(){
+
+        global $wpdb;
+       
+  $table_name = "wpym_ex_single_pdf";
+  $wpdb->insert($table_name, array(
+	  'Link_ex_pdf' =>  $_POST['link'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'id_ex_project_pdf'   =>  $_POST['id'],
+          'type_pdf'   =>  "resSale",
+          'location' =>  $_POST['location']
+        ),array('%s','%s' , '%s' , '%s') 
+);
+
+
+}
+
+
+
+
 add_action( 'wp_ajax_admResSale' , 'admResSale_area_img'  );
 add_action( 'wp_ajax_nopriv_admResSale' , 'admResSale_area_img'  );
 
@@ -868,7 +981,7 @@ function admResSale_project_img(){
 $imgv = $wpdb;
 
 $id  = $imgv->get_row( "SELECT * from wpym_projects_res_sale ORDER BY id_res_pro_sale DESC" );
-$gid = $id->id_res_pro;
+$gid = $id->id_res_pro_sale;
 $ar = array(
         'url' => $upload['url'],
         'id' => $gid
@@ -1017,7 +1130,26 @@ function project_4_res_sale(){
 //   jjjjjjjjjjjjjjjjjjjjjjjj          com sale dddddddddddddddddddddddd
 
 
+add_action( 'wp_ajax_linkComSale' , 'linkComSale'  );
+add_action( 'wp_ajax_nopriv_linkComSale' , 'linkComSale'  );
 
+
+function linkComSale(){
+
+        global $wpdb;
+       
+  $table_name = "wpym_ex_single_pdf";
+  $wpdb->insert($table_name, array(
+	  'Link_ex_pdf' =>  $_POST['link'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'id_ex_project_pdf'   =>  $_POST['id'],
+          'type_pdf'   =>  "comSale",
+          'location' => $_POST['location']
+        ),array('%s','%s' , '%s' , '%s') 
+);
+
+
+}
 
 
 add_action( 'wp_ajax_admComSale' , 'admComSale_area_img'  );
@@ -1233,7 +1365,26 @@ function project_4_com_sale(){
 
 
 
+add_action( 'wp_ajax_linkSortSale' , 'linkSortSale'  );
+add_action( 'wp_ajax_nopriv_linkSortSale' , 'linkSortSale'  );
 
+
+function linkSortSale(){
+
+        global $wpdb;
+       
+  $table_name = "wpym_ex_single_pdf";
+  $wpdb->insert($table_name, array(
+	  'Link_ex_pdf' =>  $_POST['link'], //replaced non-existing variables $lq_name, and $lq_descrip, with the ones we set to collect the data - $name and $description
+         
+          'id_ex_project_pdf'   =>  $_POST['id'],
+          'type_pdf'   =>  "sortSale",
+          'location' => $_POST['location']
+        ),array('%s','%s' , '%s' , '%s') 
+);
+
+
+}
 
 
 
@@ -1438,6 +1589,349 @@ function project_4_sort_sale(){
 	wp_die();
 
 }
+
+
+
+
+
+
+add_action( 'wp_ajax_delete' , 'delete'  );
+add_action( 'wp_ajax_nopriv_delete' , 'delete'  );
+
+function delete(){
+        global $wpdb;
+   $type = $_POST['type'];
+   $id = $_POST['id'];
+   if($type == "com_pro"){
+        $wpdb->query("DELETE FROM wpym_projects_com WHERE id_com_pro = '$id'" );
+}elseif($type == "res_pro"){
+        $wpdb->query("DELETE FROM wpym_projects_res WHERE id_res_pro = '$id'" );
+}elseif($type == "sort_pro"){
+        $wpdb->query("DELETE FROM wpym_projects_sort WHERE id_sort_pro = '$id'" );
+}elseif($type == "res_pro_sale"){
+        $wpdb->query("DELETE FROM wpym_projects_res_sale WHERE id_res_pro_sale = '$id'" );
+}elseif($type == "com_pro_sale"){
+        $wpdb->query("DELETE FROM wpym_projects_com_sale WHERE id_com_pro_sale = '$id'" );
+}elseif($type == "sort_pro_sale"){
+
+        $wpdb->query("DELETE FROM wpym_projects_sort_sale WHERE id_sort_pro_sale = '$id'" );
+}elseif($type == "res_pro"){
+        $wpdb->query("DELETE FROM wpym_projects_res WHERE id_res_pro = '$id'" );
+}
+
+        
+
+            $arr = array(
+            'url' => $upload['url']
+           
+    );
+// 	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+
+
+// update_cont
+
+
+add_action( 'wp_ajax_update_cont' , 'update_cont'  );
+add_action( 'wp_ajax_nopriv_update_cont' , 'update_cont'  );
+
+function update_cont(){
+        global $wpdb;
+     $con = $_POST['de'];
+     $id = $_POST['id'];
+     $tit = $_POST['title'];
+     $pdf = $_POST['pdf'];
+     $idd = $_POST['idpdf'];
+     $loc = $_POST['loc'];
+     
+     if($_POST['single'] == "ex"){
+
+        $table_name = "ex_single_project";
+        $wpdb->query($wpdb->prepare("UPDATE $table_name SET title_ex_sing='$tit'  , desc_ex_sing = '$con' WHERE id_ex_sin =$id"));
+        $wpdb->query($wpdb->prepare("UPDATE wpym_ex_single_pdf SET Link_ex_pdf='$pdf' , location = '$loc'  WHERE   id_ex_project_pdf ='$idd' and type_pdf= 'sign' "));
+
+
+     }else{
+
+     
+   $table_name = "wpym_all_projects";
+   $wpdb->query($wpdb->prepare("UPDATE $table_name SET desc_project_a='$con'  , title_project_a = '$tit' WHERE id_project_a =$id"));
+  
+   $wpdb->query($wpdb->prepare("UPDATE wpym_ex_single_pdf SET Link_ex_pdf='$pdf' , location = '$loc'  WHERE   id_ex_project_pdf =$idd"));
+
+}
+    $arr = array(
+            'url' => $con
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+add_action( 'wp_ajax_updateAll' , 'updateAll'  );
+add_action( 'wp_ajax_nopriv_updateAll' , 'updateAll'  );
+
+function updateAll(){
+        global $wpdb;
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+   $url = $upload['url'];
+        $name = $_POST['name'];
+        $id = $_POST['id'];
+        if($_POST['type'] == "resPro"){
+                $table_name = "wpym_res_area";
+                $wpdb->query($wpdb->prepare("UPDATE $table_name SET name_res_a ='$name'  , img_res_a = '$url' WHERE id_res_a =$id"));
+             
+
+        }elseif($_POST['type'] == "comPro"){
+
+                $table_name = "wpym_com_area";
+                $wpdb->query($wpdb->prepare("UPDATE $table_name SET name_com_a ='$name'  , img_com_a = '$url' WHERE id_com_a =$id"));
+             
+
+        }elseif($_POST['type'] == "salePro"){
+
+                $table_name = "wpym_sort_area";
+                $wpdb->query($wpdb->prepare("UPDATE $table_name SET name_sort_a ='$name'  , img_sort_a = '$url' WHERE id_sort_a =$id"));
+             
+
+        }elseif($_POST['type'] == "resSale"){
+
+                $table_name = "wpym_res_area_sale";
+                $wpdb->query($wpdb->prepare("UPDATE $table_name SET name_res_a_s ='$name'  , img_res_a_s = '$url' WHERE id_res_a_s =$id"));
+             
+
+        }elseif($_POST['type'] == "comSale"){
+
+                $table_name = "wpym_com_area_sale";
+                $wpdb->query($wpdb->prepare("UPDATE $table_name SET name_com_a_s ='$name'  , img_com_a_s = '$url' WHERE id_com_a_s =$id"));
+             
+
+        }elseif($_POST['type'] == "sortSale"){
+
+                $table_name = "wpym_sort_area_sale";
+                $wpdb->query($wpdb->prepare("UPDATE $table_name SET name_sort_a_s ='$name'  , img_sort_a_s = '$url' WHERE id_sort_a_s =$id"));
+             
+
+        }
+     
+ 
+
+    $arr = array(
+            'url' => $con
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+
+add_action( 'wp_ajax_deleteAll' , 'deleteAll'  );
+add_action( 'wp_ajax_nopriv_deleteAll' , 'deleteAll'  );
+
+function deleteAll(){
+        global $wpdb;
+       
+        $id = $_POST['id'];
+     
+        if($_POST['type'] == "resPro"){
+                
+              $table_name = "wpym_res_area";
+              $wpdb->query("DELETE FROM wpym_res_area WHERE id_res_a = '$id'" );
+
+        }elseif($_POST['type'] == "comPro"){
+
+                $table_name = "wpym_com_area";
+                $wpdb->query("DELETE FROM wpym_com_area WHERE id_com_a = '$id'" );
+
+        }elseif($_POST['type'] == "salePro"){
+
+                $table_name = "wpym_sort_area";
+                $wpdb->query("DELETE FROM wpym_sort_area WHERE id_sort_a = '$id'" );
+
+        }elseif($_POST['type'] == "resSale"){
+
+                $table_name = "wpym_res_area_sale";
+                $wpdb->query("DELETE FROM wpym_res_area_sale WHERE id_res_a_s = '$id'" );
+
+        }elseif($_POST['type'] == "comSale"){
+
+                $table_name = "wpym_com_area_sale";
+                $wpdb->query("DELETE FROM wpym_com_area_sale WHERE id_com_a_s = '$id'" );
+
+        }elseif($_POST['type'] == "sortSale"){
+
+                $table_name = "wpym_sort_area_sale";
+                $wpdb->query("DELETE FROM wpym_sort_area_sale WHERE id_sort_a_s = '$id'" );
+
+        }
+     
+ 
+
+    $arr = array(
+            'url' => $con
+           
+    );
+	echo json_encode($arr);
+	wp_reset_postdata();
+	wp_die();
+
+}
+
+
+add_action( 'wp_ajax_updateS' , 'updateS'  );
+add_action( 'wp_ajax_nopriv_updateS' , 'updateS'  );
+
+function updateS(){
+        global $wpdb;
+        $id = $_POST['id'];
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+        $url = $upload['url'];
+if(isset($_POST['develop'])){
+        
+
+        
+        $table_name = "wpym_developers";
+        $wpdb->query($wpdb->prepare("UPDATE $table_name SET img_dev ='$url'  WHERE id_dev ='$id' "));
+
+}elseif( $_POST['single'] == "ex" ){
+
+        $table_name = "ex_single_project";
+        $wpdb->query($wpdb->prepare("UPDATE $table_name SET img_ex_sing='$url' WHERE id_ex_sin =$id"));
+
+} else{
+
+
+        
+   $url = $upload['url'];
+   $table_name = "wpym_all_projects";
+   $wpdb->query($wpdb->prepare("UPDATE $table_name SET img_project_a ='$url'  WHERE id_project_a ='$id' "));
+}
+   $arr = array(
+        'url' => $id
+       
+);
+    echo json_encode($arr);
+    wp_reset_postdata();
+    wp_die();
+
+}
+
+// update_ex
+add_action( 'wp_ajax_update_ex' , 'update_ex'  );
+add_action( 'wp_ajax_nopriv_update_ex' , 'update_ex'  );
+function update_ex(){
+        global $wpdb;
+        $name = $_POST['title'];
+        $desc = $_POST['desc'];
+        $id = $_POST['id'];
+        $table_name = "wpym_ex_projects";
+        $wpdb->query($wpdb->prepare("UPDATE $table_name SET name_ex ='$name' , description_ex ='$desc'   WHERE id_ex ='$id' "));
+
+        $arr = array(
+             'url' => $name
+            
+     );
+         echo json_encode($arr);
+         wp_reset_postdata();
+         wp_die();
+
+
+}
+
+
+// changee
+add_action( 'wp_ajax_changee' , 'changee'  );
+add_action( 'wp_ajax_nopriv_changee' , 'changee'  );
+function changee(){
+        global $wpdb;
+
+        $upload = wp_upload_bits($_FILES['file']['name'],null,file_get_contents($_FILES['file']['tmp_name']));
+        $id = $_POST['id'];
+        $table_name = "wpym_ex_projects";
+        $wpdb->query($wpdb->prepare("UPDATE $table_name SET img_ex ='$upload'  WHERE id_ex ='$id' "));
+
+        $arr = array(
+             'url' => $id
+            
+     );
+         echo json_encode($arr);
+         wp_reset_postdata();
+         wp_die();
+
+
+}
+
+// developer 
+
+add_action( 'wp_ajax_updev' , 'updev'  );
+add_action( 'wp_ajax_nopriv_updev' , 'updev'  );
+
+function updev(){
+        global $wpdb;
+
+
+        $id = $_POST['id'];
+        $name = $_POST['name'];
+        $desc = $_POST['desc'];
+
+        $table_name = "wpym_developers";
+        $wpdb->query($wpdb->prepare("UPDATE $table_name SET name_dev ='$name' , description_dev='$desc'   WHERE id_dev ='$id' "));
+
+        $arr = array(
+             'url' => $id
+            
+     );
+         echo json_encode($arr);
+         wp_reset_postdata();
+         wp_die();
+
+}
+
+
+// deldev
+add_action( 'wp_ajax_deldev' , 'deldev'  );
+add_action( 'wp_ajax_nopriv_deldev' , 'deldev'  );
+
+function deldev(){
+        global $wpdb;
+
+
+        $id = $_POST['id'];
+        
+
+        $table_name = "wpym_developers";
+        $wpdb->query("DELETE FROM wpym_developers WHERE id_dev ='$id' " );
+        // $wpdb->query($wpdb->prepare("UPDATE $table_name SET name_dev ='$name' , description_dev='$desc'   WHERE id_dev ='$id' "));
+
+        $arr = array(
+             'url' => $id
+            
+     );
+         echo json_encode($arr);
+         wp_reset_postdata();
+         wp_die();
+
+}
+
+
+
+
+
+
+
 
 
 

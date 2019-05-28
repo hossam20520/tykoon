@@ -151,6 +151,7 @@ foreach ( $area as $row ):
                         <label >Project title 4:</label>
                         <input type="text" class="form-control pro4"  id="proName" placeholder="type project name">
                       </div>
+
                       <div class="form-group">
                           <label >Description 4:</label>
                           <textarea class="form-control desc4" rows="5" id="desc"></textarea>
@@ -162,12 +163,25 @@ foreach ( $area as $row ):
 </form>
                             <img width="200px" height="200px;" id="proj4" style="margin-top: 20px">
                           </div>
+
+
+                          <div class="form-group">
+                        <label >Link Pdf</label>
+                        <input type="text" class="form-control pro4"  id="pdf_link" placeholder="type pdf_link">
+                      </div>
+
+
+                      <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" class="form-control"  id="location" placeholder="put location">
+                      </div>
                           
                           <hr style="border: 2px solid black">
 
 
+
                     <div class="form-group text-center">
-                        <button type="submit" class="btn btn-default" style="padding-left: 20px;padding-right:20px">Save</button> 
+                        <button type="submit" id="save" class="btn btn-default" style="padding-left: 20px;padding-right:20px">Save</button> 
                     </div>
                 </div>
             </div>
@@ -413,6 +427,39 @@ function project_1(elm){
         
         
 $(document).ready(function(){
+
+
+  $("#save").click(function(){
+                 var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";  
+                 let link  = $("#pdf_link").val();
+                 let location = $("#location").val();
+                 let id = $("#project_id").val();
+                 var form_data = new  FormData();
+
+                form_data.append('link' ,  link  );
+                form_data.append('id' ,  id );
+                form_data.append('location' ,  location );
+                form_data.append('action' , 'linkResPro');
+
+
+
+ jQuery.ajax({
+       url: ajaxurl,
+       type:'POST',
+       contentType:false,
+       processData:false,
+       data:form_data,
+       dataType: 'json',
+       success:function(response){
+     alert("success");
+     location.reload(true);
+       
+
+       }
+   });
+
+
+  });
 $("select.country").change(function(){
         var selectedCountry = $(this).children("option:selected").val();
        // alert("You have selected the country - " + selectedCountry);

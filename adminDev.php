@@ -32,6 +32,11 @@ get_header();
                       <label >Description:</label>
                       <textarea class="form-control" rows="5" id="desc"></textarea>
                     </div>
+
+                    <div class="form-group">
+                      <label >Location:</label>
+                      <textarea class="form-control" rows="5" id="loc"></textarea>
+                    </div>
                     
                     
                     <div class="form-group text-center">
@@ -87,8 +92,10 @@ $("#gon").click(function(){
         var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>"; 
         let name = $("#dev").val();
         let dec = $("#desc").val();
+        let loc = $("#loc").val();
         var form_data = new  FormData();
          form_data.append('name_dev' , name );
+         form_data.append('loca' , loc );
             form_data.append('desc' , dec );
 
 

@@ -19,7 +19,14 @@ get_header();
 <p>How to use CSS to create a stacked form:</p>
 
 <div class="container">
-  <form action="/action_page.php">
+
+<center><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=email@domain.com" style="
+    font-size: 24px;
+    color: #f9f9f9;
+"> Apply Now And Send Your C.v Click Here Now! </a> <img draggable="false" class="emoji" alt="😎" src="https://s.w.org/images/core/emoji/11.2.0/svg/1f60e.svg" style="
+    /* width: 20px; */
+"></center>
+  <!-- <form action="/action_page.php">
     <label for="fname">First Name</label>
     <input type="text" id="fname" name="firstname" placeholder="Your name..">
 
@@ -38,7 +45,7 @@ get_header();
   <input type="file" name="file1">
     <input type="button" id="bot" value="Submit">
           </form>
-  </form>
+  </form> -->
 </div>
 
 <script src="<?php echo get_template_directory_uri();  ?>/script/jquery-1.12.4.min.js"></script>

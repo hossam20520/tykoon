@@ -9,13 +9,25 @@ get_header();
 
 
 <header>
-        <h1>Tykoon Real Estate</h1>
+        <h1>TYKOON Real Estate</h1>
         
         
         </header>
         
-        <section class="data">
-        <h1>-Sign with us</h1>
+        <section class="data" style="
+    margin-bottom: 147px;
+    margin-top: 82px;
+">>
+
+
+		<center><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=email@domain.com" style="
+    font-size: 25px;
+    background-color: #f1f1f1;
+    color: #5681e0;
+">Click Here To Send Your Message</a></center>
+
+
+        <!-- <h1>-Sign with us</h1>
         <div class="login-wrap">
 	<div class="login-html">
 		<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
@@ -70,7 +82,7 @@ get_header();
 		</div>
 	</div>
 </div>
-        
+         -->
         
        
 
